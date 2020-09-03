@@ -6,13 +6,15 @@ import java.rmi.registry.Registry;
 public class Servidor {
 
 	public static void main(String[] args) {
+		try {
+			
+			Registry referenciaServicoNomes = LocateRegistry.createRegistry(1099);
 		
-		//Nao consegui achar o arquivo do how to, por isso ainda está conflitando, mas aparentemente é só colocar um inteiro como parametro
-		Registry referenciaServicoNomes = LocateRegistry.createRegistry();
+			InterfaceServ referenciaServidor = new ServImpl();
 		
-		InterfaceServ referenciaServidor = new ServImpl();
+			referenciaServicoNomes.rebind("HelloWorld", referenciaServidor);
 		
-		referenciaServicoNomes.rebind("HelloWorld", referenciaServidor);
+		} catch(Exception e) {}
 	}
 
 }

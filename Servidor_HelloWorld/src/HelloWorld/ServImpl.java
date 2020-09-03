@@ -9,7 +9,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 	}
 	
 	public void registrarInteresse(String texto, InterfaceCli referenciaCliente) {
-		
+		referenciaCliente.notificar("Deu certo");
 	}
 	
 }

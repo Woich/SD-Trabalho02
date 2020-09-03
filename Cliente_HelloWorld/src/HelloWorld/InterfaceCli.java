@@ -4,6 +4,6 @@ import java.rmi.Remote;
 
 public interface InterfaceCli extends Remote{
 	
-	public void notificar(InterfaceCli texto);
+	public void notificar(String texto);
 	
 }
