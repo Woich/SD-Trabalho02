@@ -12,7 +12,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		
 	}
 	
-	public synchronized UUID registrar() {
+	public synchronized UUID registrar() throws RemoteException{
 		Cliente cliente = new Cliente();
 		
 		this.clientes.add(cliente); //isso funciona??
@@ -24,7 +24,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		return cliente.getID();
 	}
 	
-	public void registrarInteresse(String texto, InterfaceCli referenciaCliente) {
+	public void registrarInteresse(String texto, InterfaceCli referenciaCliente) throws RemoteException{
 		referenciaCliente.notificar("Deu certo");
 	}
 	
