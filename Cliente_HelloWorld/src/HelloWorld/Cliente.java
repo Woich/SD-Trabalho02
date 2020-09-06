@@ -2,6 +2,7 @@ package HelloWorld;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.UUID;
 
 public class Cliente {
 
@@ -10,7 +11,10 @@ public class Cliente {
 			
 			Registry referenciaServicoNomes = LocateRegistry.getRegistry();
 			InterfaceServ referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("HelloWorld");
-		
+			
+			UUID idCliente = referenciaServidor.registrar();
+
+			
 			new CliImpl(referenciaServidor);
 		
 		}

@@ -13,6 +13,9 @@ public class Servidor {
 			InterfaceServ referenciaServidor = new ServImpl();
 		
 			referenciaServicoNomes.rebind("HelloWorld", referenciaServidor);
+			while(true) {
+				System.out.print("a");
+			}
 		
 		} catch(Exception e) {}
 	}
