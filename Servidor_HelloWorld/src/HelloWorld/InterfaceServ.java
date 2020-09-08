@@ -5,6 +5,6 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public interface InterfaceServ extends Remote{
-	public UUID registrar() throws RemoteException;
-	public void registrarInteresse(String texto, InterfaceCli referenciaCliente) throws RemoteException;
+	public UUID registrar(InterfaceCli interfaceCliente) throws RemoteException;
+	public void registrarInteresse(UUID clienteId, Acao acao) throws RemoteException;
 }

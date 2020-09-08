@@ -12,7 +12,7 @@ public class Cliente {
 			Registry referenciaServicoNomes = LocateRegistry.getRegistry();
 			InterfaceServ referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("HelloWorld");
 			
-			UUID idCliente = referenciaServidor.registrar();
+			UUID idCliente = referenciaServidor.registrar(new CliImpl(referenciaServidor));
 
 			
 			new CliImpl(referenciaServidor);

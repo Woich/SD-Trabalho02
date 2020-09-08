@@ -12,10 +12,10 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		
 	}
 	
-	public synchronized UUID registrar() throws RemoteException{
-		Cliente cliente = new Cliente();
+	public synchronized UUID registrar(InterfaceCli interfaceCliente) throws RemoteException{
+		Cliente cliente = new Cliente(interfaceCliente);
 		
-		this.clientes.add(cliente); //isso funciona??
+		this.clientes.add(cliente);
 		
 		this.clientes.forEach(x -> {
 			System.out.println(x.id);
@@ -24,8 +24,8 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		return cliente.getID();
 	}
 	
-	public void registrarInteresse(String texto, InterfaceCli referenciaCliente) throws RemoteException{
-		referenciaCliente.notificar("Deu certo");
+	public void registrarInteresse(UUID clienteId, Acao acao) throws RemoteException{
+		
 	}
 	
 }

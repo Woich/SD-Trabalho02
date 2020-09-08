@@ -7,12 +7,20 @@ public class Cliente {
 	UUID id;
 	ArrayList<Acao> listaAcoes;
 	ArrayList<Acao> interesses;
+	InterfaceCli interfaceCliente;
 	
 	
 	public Cliente() {
 		this.id = UUID.randomUUID();
 		this.listaAcoes = new ArrayList<Acao>();
 		this.interesses = new ArrayList<Acao>();
+	}
+	
+	public Cliente(InterfaceCli interfaceCliente) {
+		this.id = UUID.randomUUID();
+		this.listaAcoes = new ArrayList<Acao>();
+		this.interesses = new ArrayList<Acao>();
+		this.interfaceCliente = interfaceCliente;
 	}
 	
 	public UUID getID() {

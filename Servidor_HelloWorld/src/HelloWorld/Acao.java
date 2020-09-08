@@ -4,6 +4,7 @@ public class Acao {
 	String codigo;
 	double preco;
 	double precoDeCompra;
+	Empresa empresa;
 	
 	public Acao (String codigo, double preco) {
 		this.codigo = codigo;
