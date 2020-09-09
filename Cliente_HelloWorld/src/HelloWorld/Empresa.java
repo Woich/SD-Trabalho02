@@ -7,8 +7,6 @@ public class Empresa {
 	
 	private UUID id;
 	private String nome;
-	private int quantidadeTotalAcoes;
-	private List<Acao> acoes;
 	
 	public Empresa() {}
 	
@@ -20,14 +18,6 @@ public class Empresa {
 	
 	public String getNome() {
 		return nome;
-	}
-	
-	public int getQuantidadeTotalAcoes() {
-		return quantidadeTotalAcoes;
-	}
-
-	public List<Acao> getAcoes() {
-		return acoes;
 	}
 	
 	

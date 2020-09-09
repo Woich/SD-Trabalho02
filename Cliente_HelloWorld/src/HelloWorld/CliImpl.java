@@ -5,7 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
 	public CliImpl (InterfaceServ referenciaServidor) throws RemoteException {
-		referenciaServidor.registrarInteresse("Oi", this);
+		System.out.println("DAE");
 	}
 	
 	public void notificar(String texto) 

@@ -3,10 +3,12 @@ package HelloWorld;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 	ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+	List<Interesse> listaIteresses = new ArrayList<>();
 	
 	public ServImpl () throws RemoteException{
 		
@@ -24,8 +26,8 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		return cliente.getID();
 	}
 	
-	public void registrarInteresse(UUID clienteId, Acao acao) throws RemoteException{
-		
+	public void registrarInteresse(UUID clienteId, Empresa empresa) throws RemoteException{
+		listaIteresses.add(new Interesse(clienteId, empresa));
 	}
 	
 }

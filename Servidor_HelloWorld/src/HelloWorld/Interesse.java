@@ -4,14 +4,21 @@ import java.util.UUID;
 
 public class Interesse {
 	
-	UUID idCliente;
-	Empresa esmpresa;
+	private UUID idCliente;
+	private Empresa empresa;
+	
+	public Interesse(UUID idCliente, Empresa empresa) {
+		
+		this.idCliente = idCliente;
+		this.empresa = empresa;
+		
+	}
 	
 	/*GETS E SETS*/
 	public UUID getIdCliente() {
 		return idCliente;
 	}
-	public Empresa getEsmpresa() {
-		return esmpresa;
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 }
