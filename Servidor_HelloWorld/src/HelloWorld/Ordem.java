@@ -28,14 +28,6 @@ public class Ordem {
 		this.codigoAcao = codigoAcao;
 	}
 	
-	public void setPrecoMaximo(double precoMaximo) {
-		this.precoMaximoCompra = precoMaximo;
-	}
-	
-	public void setPrecoMinimo(double precoMinimo) {
-		this.precoMinimoVenda = precoMinimo;
-	}
-	
 	public UUID getIdCliente() {
 		return this.idCliente;
 	}
@@ -44,17 +36,13 @@ public class Ordem {
 		return this.codigoAcao;
 	}
 	
-	public double getPrecoMaximo() {
+	public double getPrecoMaximoCompra() {
 		return this.precoMaximoCompra;
 	}
 	
-	public double getPrecoMinimo() {
+	public double getPrecoMinimoVenda() {
 		return this.precoMinimoVenda;
 	}
-
-	//public double getPrecoMaximoCompra() {
-	//	return precoMaximoCompra;
-	//}
 	
 	public LocalDateTime getDataLimite() {
 		return this.dataLimite;
@@ -64,9 +52,6 @@ public class Ordem {
 		this.precoMaximoCompra = precoMaximoCompra;
 	}
 
-	public double getPrecoMinimoVenda() {
-		return precoMinimoVenda;
-	}
 
 	public void setPrecoMinimoVenda(double precoMinimoVenda) {
 		this.precoMinimoVenda = precoMinimoVenda;
@@ -78,5 +63,13 @@ public class Ordem {
 
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+	
+	public boolean isUltrapassado() {
+		return this.dataLimite.isBefore(LocalDateTime.now());
+	}
+	
+	public boolean isVenda() {
+		return this.getPrecoMinimoVenda() > 0;
 	}
 }

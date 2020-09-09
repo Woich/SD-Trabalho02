@@ -23,15 +23,11 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 	}
 	
 	public synchronized UUID registrar(InterfaceCli interfaceCliente) throws RemoteException{
-		Cliente cliente = new Cliente(interfaceCliente);
+		Cliente cliente = new Cliente(interfaceCliente); //registra novo cliente
 		
-		this.clientes.add(cliente);
+		this.clientes.add(cliente); //adiciona a lista de clientes
 		
-		this.clientes.forEach(x -> {
-			System.out.println(x.id);
-		});
-		
-		return cliente.getID();
+		return cliente.getID(); //retorna ao cliente seu ID
 	}
 	
 	public void registrarInteresse(UUID clienteId, Empresa empresa) throws RemoteException{
@@ -40,48 +36,48 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 	
 	public void listarCotacoes(UUID idCliente) throws RemoteException{
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
-		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);
+		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null); //busca o cliente que fez a requisicao
 		if(cliente != null) {
 			cliente.getCotacoes().forEach(x -> {
-				System.out.println(x.codigo + " ----> " + "R$" + formatter.format(x.preco));
+				System.out.println(x.getCodigo() + " ----> " + formatter.format(x.getPreco())); //printa todas as acoes da lista de cotacoes do cliente(codigo e preco)
 			});
 		}
 	}
 	
-	public void insertCotacao(String codigo, UUID idCliente) throws RemoteException{
-		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);
-		Acao acao = this.listaAcoes.stream().filter(x -> x.codigo == codigo).findAny().orElse(null);
+	public synchronized void insertCotacao(String codigo, UUID idCliente) throws RemoteException{
+		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null); //busca o cliente que fez a requisicao
+		Acao acao = this.listaAcoes.stream().filter(x -> x.getCodigo() == codigo).findAny().orElse(null); //busca acao com o codigo passado
 		if(acao != null) {
-			cliente.insertInteresse(acao);
+			cliente.insertInteresse(acao);                                                              //insere acao a lista de interesses do cliente
 			System.out.println("Ação adicionada com sucesso");
 		}
 	}
 	
-	public void removeCotacao(String codigo, UUID idCliente) throws RemoteException{
-		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);
-		Acao acao = this.listaAcoes.stream().filter(x -> x.codigo == codigo).findAny().orElse(null);
+	public synchronized void removeCotacao(String codigo, UUID idCliente) throws RemoteException{
+		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);  //busca o cliente que fez a requisicao
+		Acao acao = cliente.getInteresses().stream().filter(x -> x.getCodigo() == codigo).findAny().orElse(null);   //busca acao com o codigo passado na lista de interesses do cliente
 		if(acao != null) {
-			cliente.removeInteresse(codigo);
+			cliente.removeInteresse(codigo);                                                              // remove a acao da lista de interesse do cliente
 			System.out.println("Ação removida com sucesso");
 		}
 	}
 	
-	public void comprarAcao(String codigo, int precoMaximoCompra, int prazo, UUID idCliente) throws RemoteException{
-		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);
-		Acao acao = cliente.getAcoes().stream().filter(x -> x.codigo == codigo).findAny().orElse(null);
+	public synchronized void comprarAcao(String codigo, int precoMaximoCompra, int prazo, UUID idCliente) throws RemoteException{
+		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);   //busca o cliente que fez a requisicao
+		Acao acao = this.listaAcoes.stream().filter(x -> x.getCodigo() == codigo).findAny().orElse(null);    //busca acao com o codigo passado
 		if(acao != null) {
-			Ordem ordem = new Ordem(idCliente, codigo, (double)precoMaximoCompra, 0, prazo);
-			this.listaOrdens.add(ordem);
+			Ordem ordem = new Ordem(idCliente, codigo, (double)precoMaximoCompra, 0, prazo);                //cria nova ordem de compra
+			this.listaOrdens.add(ordem);                                                                    //adiciona a lista de ordens
 			System.out.println("Ordem de compra registrada com sucesso");
 		}	
 	}
 	
-	public void venderAcao(String codigo, int precoMinimoVenda, int prazo, UUID idCliente) throws RemoteException{
-		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);
-		Acao acao = cliente.getAcoes().stream().filter(x -> x.codigo == codigo).findAny().orElse(null);
+	public synchronized void venderAcao(String codigo, int precoMinimoVenda, int prazo, UUID idCliente) throws RemoteException{
+		Cliente cliente = this.clientes.stream().filter(c -> c.getID() == idCliente).findAny().orElse(null);   //busca o cliente que fez a requisicao
+		Acao acao = cliente.getAcoes().stream().filter(x -> x.getCodigo() == codigo).findAny().orElse(null);   //busca acao com o codigo passado na lista de acoes do cliente
 		if(acao != null) {
-			Ordem ordem = new Ordem(idCliente, codigo, 0, (double)precoMinimoVenda, prazo);
-			this.listaOrdens.add(ordem);
+			Ordem ordem = new Ordem(idCliente, codigo, 0, (double)precoMinimoVenda, prazo);                     //cria nova ordem de compra
+			this.listaOrdens.add(ordem);                                                                        //adiciona a lista de ordens
 			System.out.println("Ordem de venda registrada com sucesso");
 		}
 	}

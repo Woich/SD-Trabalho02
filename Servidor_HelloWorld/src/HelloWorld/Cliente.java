@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Cliente {
-	UUID id;
-	ArrayList<Acao> listaAcoes;
-	ArrayList<Acao> interesses;
-	InterfaceCli interfaceCliente;
+	private UUID id;
+	private ArrayList<Acao> listaAcoes;
+	private ArrayList<Acao> interesses;
+	private InterfaceCli interfaceCliente;
 	
 	
 	public Cliente() {
@@ -40,7 +40,7 @@ public class Cliente {
 	}
 	
 	public void removeAcao(String codigo) {
-		this.listaAcoes.removeIf(x -> x.codigo == codigo);
+		this.listaAcoes.removeIf(x -> x.getCodigo() == codigo);
 	}
 	
 	public void insertInteresse(Acao acao) {
@@ -48,7 +48,7 @@ public class Cliente {
 	}
 	
 	public void removeInteresse(String codigo) {
-		this.interesses.removeIf(x -> x.codigo == codigo);
+		this.interesses.removeIf(x -> x.getCodigo() == codigo); //remove interesse da lista 
 	}
 	
 	public ArrayList<Acao> getCotacoes() {

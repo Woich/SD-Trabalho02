@@ -1,9 +1,9 @@
 package HelloWorld;
 
 public class Acao {
-	String codigo;
-	double preco;
-	double precoDeCompra;
+	private String codigo;
+	private double preco;
+	private double precoDeCompra;
 	//Empresa empresa;
 	
 	public Acao (String codigo, double preco) {
