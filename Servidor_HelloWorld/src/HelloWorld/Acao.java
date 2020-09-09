@@ -4,11 +4,12 @@ public class Acao {
 	String codigo;
 	double preco;
 	double precoDeCompra;
-	Empresa empresa;
+	//Empresa empresa;
 	
 	public Acao (String codigo, double preco) {
 		this.codigo = codigo;
 		this.preco = preco;
+		this.precoDeCompra = 0;
 	}
 	
 	public void setCodigo(String codigo) {
