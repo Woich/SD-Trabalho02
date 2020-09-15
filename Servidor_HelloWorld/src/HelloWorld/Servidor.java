@@ -12,7 +12,7 @@ public class Servidor {
 		
 			InterfaceServ referenciaServidor = new ServImpl();
 		
-			referenciaServicoNomes.rebind("HelloWorld", referenciaServidor);
+			referenciaServicoNomes.rebind("Servidor", referenciaServidor);
 		
 		} catch(Exception e) {}
 	}

@@ -1,8 +1,8 @@
 package HelloWorld;
 
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -12,81 +12,92 @@ public class Cliente {
 	public static void main(String[] args) {
 		try {
 			
-			Registry referenciaServicoNomes = LocateRegistry.getRegistry();
-			InterfaceServ referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("HelloWorld");
-			
-			UUID idCliente = referenciaServidor.registrar(new CliImpl(referenciaServidor));
 
+			Registry referenciaServicoNomes = LocateRegistry.getRegistry(1099);
 			
-			new CliImpl(referenciaServidor);
+			InterfaceServ referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("Servidor");
+
+			CliImpl clienteControle = new CliImpl(referenciaServidor);
+			
+			UUID idCliente = referenciaServidor.registrar(clienteControle);
 			
 			int escolha = 0;
 			
-		    Scanner scanner = new Scanner(System.in);
+		    Scanner scannerInt = new Scanner(System.in);
+		    Scanner scannerString = new Scanner(System.in);
 		    
-		    while(escolha != 7) {
+		    while(escolha != -1) {
 		    
 		    	System.out.println("O que deseja fazer?\n");
-		    	System.out.println("1 - Inserir a√ß√£o na lista de cota√ß√µes");
-		    	System.out.println("2 - Remover a√ß√£o da lista de cota√ß√µes");
-		    	System.out.println("3 - Registrar ordem de compra de a√ß√£o");
-		    	System.out.println("4 - Registrar ordem de venda de a√ß√£o");
-		    	System.out.println("5 - Mostrar lista de cota√ß√µes");
-		    	System.out.println("6 - Registrar interesse em notifica√ß√µes");
-		    	System.out.println("7 - Sair");
-
-
-		    
-
-		    	escolha = scanner.nextInt();  
+		    	System.out.println("1 - Inserir uma nova empresa");
+		    	System.out.println("2 - Listar minhas aÁıes");
+		    	System.out.println("3 - Registrar ordem de compra de aÁ„o");
+		    	System.out.println("4 - Registrar ordem de venda de aÁ„o");
+		    	System.out.println("5 - Mostrar lista de cotaÁıes");
+		    	System.out.println("6 - Registrar interesse em notificaÁıes");
+		    	System.out.println("7 - Mostrar lista de Empresas");
+		    	System.out.println("-1 - Sair");
+		    	
+		    	escolha = scannerInt.nextInt();  
 		    	
 		    	switch (escolha) {		    	
 		    		case 1:
-		    			System.out.println("Digite o c√≥digo da a√ß√£o");
-		    			String codigoInserir = scanner.nextLine();
-		    			referenciaServidor.insertCotacao(codigoInserir, idCliente);
+		    			System.out.println("Digite o nome da Empresa");
+		    			String nomeEmpresa = scannerString.nextLine();
+		    			System.out.println("Digite a quantidade de aÁıes da Empresa");
+		    			int qtdAcoes = scannerInt.nextInt();
+		    			boolean incluido = referenciaServidor.insertEmpresa(nomeEmpresa, qtdAcoes, idCliente, true);
+		    			if(!incluido) {
+		    				System.out.println("N„ foi possÌvel incluir a empresa");
+		    			}
 		    			break;
 		    			
 		    		case 2:
-		    			System.out.println("Digite o c√≥digo da a√ß√£o");
-		    			String codigoRemover = scanner.nextLine();
-		    			referenciaServidor.removeCotacao(codigoRemover, idCliente);
+		    			System.out.println("Digite o cÛdigo da aÁ„o");
+		    			String codigoRemover = scannerString.nextLine();
+		    			//referenciaServidor.removeCotacao(codigoRemover, idCliente);
 		    			break;
 		    		
 		    		case 3:
-		    			System.out.println("Digite o c√≥digo da a√ß√£o");
-		    			String codigoComprar = scanner.nextLine();
+		    			System.out.println("Digite o cÛdigo da aÁ„o");
+		    			String codigoComprar = scannerString.nextLine();
 		    			System.out.println("Digite o valor m√°ximo que deseja pagar");
-		    			int valorMaximoCompra = scanner.nextInt();
+		    			int valorMaximoCompra = scannerInt.nextInt();
 		    			System.out.println("Digite o prazo m√°ximo da ordem (em minutos)");
-		    			int prazoCompra = scanner.nextInt();
-		    			referenciaServidor.comprarAcao(codigoComprar, valorMaximoCompra, prazoCompra, idCliente);
+		    			int prazoCompra = scannerInt.nextInt();
+		    			//referenciaServidor.comprarAcao(codigoComprar, valorMaximoCompra, prazoCompra, idCliente);
 		    			break;
 		    		
 		    		case 4: 
-		    			System.out.println("Digite o c√≥digo da a√ß√£o");
-		    			String codigoVender = scanner.nextLine();
+		    			System.out.println("Digite o cÛdigo da aÁ„o");
+		    			String codigoVender = scannerString.nextLine();
 		    			System.out.println("Digite o valor m√≠nimo que deseja receber pela a√ß√£o");
-		    			int valorMinimoVenda = scanner.nextInt();
+		    			int valorMinimoVenda = scannerInt.nextInt();
 		    			System.out.println("Digite o prazo m√°ximo da ordem (em minutos)");
-		    			int prazoVenda = scanner.nextInt();
-		    			referenciaServidor.venderAcao(codigoVender, valorMinimoVenda, prazoVenda, idCliente);
+		    			int prazoVenda = scannerInt.nextInt();
+		    			//referenciaServidor.venderAcao(codigoVender, valorMinimoVenda, prazoVenda, idCliente);
 		    			break;
 		    			
 		    		case 5: 
-		    			referenciaServidor.listarCotacoes(idCliente);
+		    			//referenciaServidor.listarCotacoes(idCliente);
 		    			break;
 		    		
 		    		case 6: 
-		    			System.out.println("Digite o c√≥digo da a√ß√£o");
-		    			String codigoNotificacao = scanner.nextLine();
+		    			System.out.println("Digite o cÛdigo da a√ß√£o");
+		    			String codigoNotificacao = scannerString.nextLine();
 		    			System.out.println("Digite o limite de ganho");
-		    			int limiteGanho = scanner.nextInt();
+		    			int limiteGanho = scannerInt.nextInt();
 		    			System.out.println("Digite o limite de perda");
-		    			int limitePerda = scanner.nextInt();
+		    			int limitePerda = scannerInt.nextInt();
 		    			//m√©todo de registrar interesse 
 		    			break;
-		    			
+		    		
+		    		case 7:
+		    			System.out.println("CODIGO | NOME");
+		    			for(Empresa item : referenciaServidor.listarEmpresas()) {
+		    				System.out.println(item.getCodigo() + " | " + item.getNome());
+		    			}
+		    			break;
 		    		default: 
 		    			break;
 		    			
@@ -95,7 +106,7 @@ public class Cliente {
 		    }
 		
 		}
-		catch(Exception a) { }
+		catch(Exception a) { System.out.println(a.getMessage()); }
 	}
 
 }

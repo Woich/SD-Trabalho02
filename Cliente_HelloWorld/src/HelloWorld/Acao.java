@@ -10,13 +10,11 @@ public class Acao implements Serializable{
 	private double preco;
 	private double precoDeCompra;
 	Empresa empresa;
-	Cliente clienteDono;
 	
 	public Acao (String codigo, double preco) {
 		this.codigo = codigo;
 		this.preco = preco;
 		this.precoDeCompra = 0;
-		this.clienteDono = null;
 	}
 	
 	public Acao (String codigo, double preco, Empresa empresa) {
@@ -24,7 +22,6 @@ public class Acao implements Serializable{
 		this.preco = preco;
 		this.precoDeCompra = 0;
 		this.empresa = empresa;
-		this.clienteDono = null;
 	}
 	
 	public void setCodigo(String codigo) {
@@ -49,18 +46,6 @@ public class Acao implements Serializable{
 	
 	public double getPrecoDeCompra() {
 		return this.precoDeCompra;
-	}
-
-	public Cliente getClienteDono() {
-		return clienteDono;
-	}
-
-	public void setClienteDono(Cliente clienteDono) {
-		this.clienteDono = clienteDono;
-	}
-
-	public Empresa getEmpresa() {
-		return empresa;
 	}
 	
 }
