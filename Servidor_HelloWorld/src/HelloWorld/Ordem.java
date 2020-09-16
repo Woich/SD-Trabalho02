@@ -15,6 +15,8 @@ public class Ordem implements Serializable{
 	private double precoMinimoVenda;
 	private LocalDateTime dataLimite;
 	
+	public Ordem() {}
+	
 	public Ordem(UUID idCliente, String codigoAcao, double precoMaximo , double precoMinimo, int prazo) {
 		this.idCliente = idCliente;
 		this.codigoAcao = codigoAcao;

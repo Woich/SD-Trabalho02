@@ -99,11 +99,15 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		Empresa empresa = listaEmpresas.stream().filter(x -> x.getCodigo().equals(codigo)).findAny().orElse(null);   //busca empresa com o codigo passado na lista de acoes do cliente
 		if(empresa != null) {
 			
-			for(Acao acao : listaAcoes) {
-				if(acao.getEmpresa().getCodigo().equals(codigo) && acao.getClienteDono().equals(cliente) &&!acao.isaVenda()) {
-					Ordem ordem = new Ordem(idCliente, acao.getCodigo(), 0, (double)precoMinimoVenda, prazo);                     //cria nova ordem de compra
-					this.listaOrdensVendas.add(ordem);                                                                  //adiciona a lista de ordens
-					acao.setaVenda(true);
+			for(int i = 0; i < qtdVendas; i++) {
+				boolean isSelecionado = true;
+				for(Acao acao : listaAcoes) {
+					if(acao.getEmpresa().getCodigo().equals(codigo) && acao.getClienteDono().equals(cliente) && !acao.isaVenda() && isSelecionado) {
+						Ordem ordem = new Ordem(idCliente, acao.getCodigo(), 0, (double)precoMinimoVenda, prazo);                     //cria nova ordem de compra
+						this.listaOrdensVendas.add(ordem);                                                                  //adiciona a lista de ordens
+						acao.setaVenda(true);
+						isSelecionado = false;
+					}
 				}
 			}
 			checkOrdens();
@@ -147,10 +151,19 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		Acao acao = listaAcoes.stream().filter(x -> x.getCodigo().equals(venda.getCodigoAcao())).findAny().orElse(null);
 		ClienteControle clienteComprador = this.listaClientes.stream().filter(c -> c.getID().equals(compra.getIdCliente())).findAny().orElse(null);   //busca o cliente que está comprando
 		Empresa empr = this.listaEmpresas.stream().filter(e -> e.getCodigo().equals(compra.getCodigoEmpresa())).findAny().orElse(null); //busca a empresa informada
-
+		
+		listaAcoes.remove(acao);
+		
 		acao.setClienteDono(clienteComprador);
+		acao.setPrecoDeCompra(compra.getPrecoMaximoCompra());
+		
+		listaAcoes.add(acao);
+		
+		listaEmpresas.remove(empr);
 		
 		empr.setValorEmpresa(compra.getPrecoMaximoCompra());
+		
+		listaEmpresas.add(empr);
 		
 		new Notificar(empr, listaInteresses);
 	}
@@ -204,16 +217,26 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 	
 	private synchronized void checkOrdens() {
 		try {
+			
+			List<Ordem> comprasARemover = new ArrayList<>(0);
+			Ordem vendaARemover = new Ordem();
+			
 			if(listaOrdensCompras != null && listaOrdensCompras.size() > 0 && listaOrdensVendas != null && listaOrdensVendas.size() > 0) {
 				for(Ordem compra : listaOrdensCompras) {
+					boolean isSelecionado = true;
 					for(Ordem venda : listaOrdensVendas) {
-						if(venda.getCodigoAcao().substring(0, 4).equals(compra.getCodigoEmpresa()) && venda.getPrecoMinimoVenda() <= compra.getPrecoMaximoCompra()) {
+						if( isSelecionado && venda.getCodigoAcao().substring(0, 4).equals(compra.getCodigoEmpresa()) && venda.getPrecoMinimoVenda() <= compra.getPrecoMaximoCompra()) {
 							realizarVenda(venda, compra);
-							listaOrdensCompras.remove(compra);
-							listaOrdensVendas.remove(venda);
+							comprasARemover.add(compra);
+							vendaARemover = venda;
+							isSelecionado = false;
 						}
 					}
+					
+					listaOrdensVendas.remove(vendaARemover);
 				}
+				
+				listaOrdensCompras.removeAll(comprasARemover);
 			}
 			
 		}catch (Exception e) {
