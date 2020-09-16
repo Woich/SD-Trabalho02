@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface InterfaceServ extends Remote{
 	public UUID registrar(InterfaceCli interfaceCliente) throws RemoteException;
-	public void registrarInteresse(UUID clienteId, String codEmpresa) throws RemoteException;
+	public void registrarInteresse(UUID clienteId, String codEmpresa, double valGanho, double valPerda) throws RemoteException;
 	public void removeInteresse(UUID clienteId, String codEmpresa) throws RemoteException;
 	public void listarCotacoes(UUID idCliente) throws RemoteException;
 	public void insertCotacao(double valorCotacao) throws RemoteException;

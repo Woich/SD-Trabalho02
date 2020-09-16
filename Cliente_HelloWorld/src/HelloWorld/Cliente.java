@@ -25,6 +25,7 @@ public class Cliente {
 			
 		    Scanner scannerInt = new Scanner(System.in);
 		    Scanner scannerDouble = new Scanner(System.in);
+		    Scanner scannerFloat = new Scanner(System.in);
 		    Scanner scannerString = new Scanner(System.in);
 		    
 		    while(escolha != -1) {
@@ -133,7 +134,11 @@ public class Cliente {
 		    			System.out.println("");
 		    			System.out.println("Qual a empresa desejada (Informar Código):");
 		    			String codEmpresa = scannerString.nextLine();
-		    			referenciaServidor.registrarInteresse(idCliente, codEmpresa);
+		    			System.out.println("Qual o valor máximo de ganho da empresa?(R$)");
+		    			float valGanho = scannerFloat.nextFloat();
+		    			System.out.println("Qual o valor máximo de perda da empresa?(R$)");
+		    			float valPerda = scannerFloat.nextFloat();
+		    			referenciaServidor.registrarInteresse(idCliente, codEmpresa, valGanho, valPerda);
 		    			break;
 		    		
 		    		case 6: 
@@ -172,13 +177,13 @@ public class Cliente {
 		    			break;
 		    		
 		    		case 8: 
-		    			System.out.println("De quanto será o aumento?");
+		    			System.out.println("De quanto será o aumento?(R$)");
 		    			double valorCotacao = scannerDouble.nextDouble();
 		    			referenciaServidor.insertCotacao(valorCotacao);
 		    			break;
 		    		
 		    		case 9: 
-		    			System.out.println("De quanto será a reducao?");
+		    			System.out.println("De quanto será a reducao?(R$)");
 		    			double valorCotacaoReducao = scannerDouble.nextDouble();
 		    			referenciaServidor.removeCotacao(valorCotacaoReducao);
 		    			break;

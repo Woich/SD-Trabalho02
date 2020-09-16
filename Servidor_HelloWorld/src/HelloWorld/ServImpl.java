@@ -34,11 +34,11 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		return cliente.getID(); //retorna ao cliente seu ID
 	}
 	
-	public synchronized void registrarInteresse(UUID clienteId, String codEmpresa) throws RemoteException{
+	public synchronized void registrarInteresse(UUID clienteId, String codEmpresa, double valGanho, double valPerda) throws RemoteException{
 		ClienteControle cliente = this.listaClientes.stream().filter(c -> c.getID().equals(clienteId)).findAny().orElse(null);//busca o cliente que fez a requisicao
 		Empresa empr = this.listaEmpresas.stream().filter(e -> e.getCodigo().equals(codEmpresa)).findAny().orElse(null); //busca a empresa informada
 		
-		listaInteresses.add(new Interesse(cliente, empr));//Adiciona cliente na lista de interesses
+		listaInteresses.add(new Interesse(cliente, empr, valGanho, valPerda));//Adiciona cliente na lista de interesses
 	}
 	
 	public synchronized void removeInteresse(UUID clienteId, String codEmpresa) throws RemoteException{
@@ -152,6 +152,9 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		ClienteControle clienteComprador = this.listaClientes.stream().filter(c -> c.getID().equals(compra.getIdCliente())).findAny().orElse(null);   //busca o cliente que está comprando
 		Empresa empr = this.listaEmpresas.stream().filter(e -> e.getCodigo().equals(compra.getCodigoEmpresa())).findAny().orElse(null); //busca a empresa informada
 		
+		ClienteControle vendedor = this.listaClientes.stream().filter(c -> c.getID().equals(venda.getIdCliente())).findAny().orElse(null);
+		ClienteControle comprador = this.listaClientes.stream().filter(c -> c.getID().equals(compra.getIdCliente())).findAny().orElse(null);
+		
 		listaAcoes.remove(acao);
 		
 		acao.setClienteDono(clienteComprador);
@@ -166,6 +169,8 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		listaEmpresas.add(empr);
 		
 		new Notificar(empr, listaInteresses);
+		new Notificar(vendedor, empr, 4);
+		new Notificar(comprador, empr, 5);
 	}
 	
 	public List<Acao> listarAcoesCliente(UUID idCliente) throws RemoteException{
