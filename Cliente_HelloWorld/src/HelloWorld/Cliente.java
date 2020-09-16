@@ -88,32 +88,36 @@ public class Cliente {
 		    			String codigoEmpresaCompra = scannerString.nextLine();
 		    			System.out.println("Qual o valor máximo que deseja pagar?");
 		    			int maxPagar = scannerInt.nextInt();
+		    			System.out.println("Quantas Ações deseja compar?");
+		    			int qtdCompra = scannerInt.nextInt();
 		    			System.out.println("Qual o tempo que essa ordem vai ficar ativa em minutos?");
 		    			int minCompra = scannerInt.nextInt();
-		    			referenciaServidor.comprarAcao(codigoEmpresaCompra, maxPagar, minCompra, idCliente);
+		    			referenciaServidor.comprarAcao(codigoEmpresaCompra, maxPagar, minCompra, idCliente, qtdCompra);
 		    			break;
 		    		
 		    		case 4: 
 		    			System.out.println("-----------------------------------------");
 		    			System.out.println("MINHAS AÇÕES");
 		    			System.out.println("-----------------------------------------");
-		    			System.out.println("CODIGO | VALOR COMPRA");
+		    			System.out.println("COD EMPRESA | CODIGO | VALOR COMPRA");
 		    			List<Acao> listaAcoes = referenciaServidor.listarAcoesCliente(idCliente);
 		    			if(listaAcoes != null) {
 		    				for(Acao item : listaAcoes) {
 			    				System.out.println("-----------------------------------------");
-			    				System.out.println(item.getCodigo() + " | " + item.getPrecoDeCompra());
+			    				System.out.println(item.getEmpresa().getCodigo() + " | " +item.getCodigo() + " | " + item.getPrecoDeCompra());
 			    			}
 		    			}
 		    			System.out.println("-----------------------------------------");
 		    			System.out.println("");
-		    			System.out.println("De qual ação deseja vender?(Informar Código)");
+		    			System.out.println("De qual empresa deseja vender?(Informar Código da Empresa)");
 		    			String codigoAcaoVenda = scannerString.nextLine();
 		    			System.out.println("Qual o valor minimo que deseja receber?");
 		    			int minReceber = scannerInt.nextInt();
+		    			System.out.println("Quantas Ações deseja vender?");
+		    			int qtdVenda = scannerInt.nextInt();
 		    			System.out.println("Qual o tempo que essa ordem vai ficar ativa em minutos?");
 		    			int minVenda = scannerInt.nextInt();
-		    			referenciaServidor.venderAcao(codigoAcaoVenda, minReceber, minVenda, idCliente);
+		    			referenciaServidor.venderAcao(codigoAcaoVenda, minReceber, minVenda, idCliente, qtdVenda);
 		    			break;
 		    		
 		    		case 5: 

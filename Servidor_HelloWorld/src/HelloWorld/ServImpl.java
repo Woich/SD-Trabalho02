@@ -74,31 +74,38 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		new Notificar(listaEmpresas, listaInteresses, 2);
 	}
 	
-	public synchronized void comprarAcao(String codigo, int precoMaximoCompra, int prazo, UUID idCliente) throws RemoteException{
+	public synchronized void comprarAcao(String codigo, int precoMaximoCompra, int prazo, UUID idCliente, int qtdComprar) throws RemoteException{
 		//Inicia limpando as listas de possíveis ordens que expiraram
 		excluirCompra();
 		excluirVenda();
 		
-		Empresa emrpresa = listaEmpresas.stream().filter(x -> x.getCodigo().equals(codigo)).findAny().orElse(null);   //busca empresa com o codigo passado na lista de acoes do cliente
-		if(emrpresa != null) {
-			Ordem ordem = new Ordem(idCliente, codigo, (double)precoMaximoCompra, prazo);                //cria nova ordem de compra
-			this.listaOrdensCompras.add(ordem);                                                                    //adiciona a lista de ordens
-			System.out.println(listaOrdensCompras.size());
+		Empresa empresa = listaEmpresas.stream().filter(x -> x.getCodigo().equals(codigo)).findAny().orElse(null);   //busca empresa com o codigo passado na lista de acoes do cliente
+		if(empresa != null) {
+			
+			for(int i = 0; i<qtdComprar; i++) {
+				Ordem ordem = new Ordem(idCliente, codigo, (double)precoMaximoCompra, prazo);//cria nova ordem de compra
+				this.listaOrdensCompras.add(ordem);                                          //adiciona a lista de ordens
+			}                                                                    
 			checkOrdens();
 		}	
 	}
 	
-	public synchronized void venderAcao(String codigo, int precoMinimoVenda, int prazo, UUID idCliente) throws RemoteException{
+	public synchronized void venderAcao(String codigo, int precoMinimoVenda, int prazo, UUID idCliente, int qtdVendas) throws RemoteException{
 		//Inicia limpando as listas de possíveis ordens que expiraram
 		excluirCompra();
 		excluirVenda();
 		
 		ClienteControle cliente = this.listaClientes.stream().filter(c -> c.getID().equals(idCliente)).findAny().orElse(null);   //busca o cliente que fez a requisicao
-		Acao acao = listaAcoes.stream().filter(x -> x.getCodigo().equals(codigo) && x.getClienteDono().equals(cliente)).findAny().orElse(null);   //busca acao com o codigo passado na lista de acoes do cliente
-		if(acao != null) {
-			Ordem ordem = new Ordem(idCliente, codigo, 0, (double)precoMinimoVenda, prazo);                     //cria nova ordem de compra
-			this.listaOrdensVendas.add(ordem);                                                                        //adiciona a lista de ordens
-			System.out.println(listaOrdensVendas.size());
+		Empresa empresa = listaEmpresas.stream().filter(x -> x.getCodigo().equals(codigo)).findAny().orElse(null);   //busca empresa com o codigo passado na lista de acoes do cliente
+		if(empresa != null) {
+			
+			for(Acao acao : listaAcoes) {
+				if(acao.getEmpresa().getCodigo().equals(codigo) && acao.getClienteDono().equals(cliente) &&!acao.isaVenda()) {
+					Ordem ordem = new Ordem(idCliente, acao.getCodigo(), 0, (double)precoMinimoVenda, prazo);                     //cria nova ordem de compra
+					this.listaOrdensVendas.add(ordem);                                                                  //adiciona a lista de ordens
+					acao.setaVenda(true);
+				}
+			}
 			checkOrdens();
 		}
 	}
@@ -195,12 +202,12 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 		}
 	}
 	
-	private void checkOrdens() {
+	private synchronized void checkOrdens() {
 		try {
 			if(listaOrdensCompras != null && listaOrdensCompras.size() > 0 && listaOrdensVendas != null && listaOrdensVendas.size() > 0) {
 				for(Ordem compra : listaOrdensCompras) {
 					for(Ordem venda : listaOrdensVendas) {
-						if(venda.getCodigoAcao().substring(0, 4).equals(compra.getCodigoEmpresa())) {
+						if(venda.getCodigoAcao().substring(0, 4).equals(compra.getCodigoEmpresa()) && venda.getPrecoMinimoVenda() <= compra.getPrecoMaximoCompra()) {
 							realizarVenda(venda, compra);
 							listaOrdensCompras.remove(compra);
 							listaOrdensVendas.remove(venda);

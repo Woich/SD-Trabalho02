@@ -11,12 +11,14 @@ public class Acao implements Serializable{
 	private double precoDeCompra;
 	Empresa empresa;
 	ClienteControle clienteDono;
+	private boolean aVenda;
 	
 	public Acao (String codigo, double preco) {
 		this.codigo = codigo;
 		this.preco = preco;
 		this.precoDeCompra = 0;
 		this.clienteDono = null;
+		aVenda = false;
 	}
 	
 	public Acao (String codigo, double preco, Empresa empresa) {
@@ -25,6 +27,7 @@ public class Acao implements Serializable{
 		this.precoDeCompra = 0;
 		this.empresa = empresa;
 		this.clienteDono = null;
+		aVenda = false;
 	}
 	
 	public void setCodigo(String codigo) {
@@ -61,6 +64,14 @@ public class Acao implements Serializable{
 
 	public Empresa getEmpresa() {
 		return empresa;
+	}
+
+	public boolean isaVenda() {
+		return aVenda;
+	}
+
+	public void setaVenda(boolean aVenda) {
+		this.aVenda = aVenda;
 	}
 
 	@Override

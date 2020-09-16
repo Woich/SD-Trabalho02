@@ -13,8 +13,8 @@ public interface InterfaceServ extends Remote{
 	public void insertCotacao(double valorCotacao) throws RemoteException;
 	public boolean insertEmpresa(String nomeEmpresa, int qtdAcoes, UUID idCliente, boolean clienteDonoEmpresa) throws RemoteException;
 	public void removeCotacao(double valorCotacao) throws RemoteException;
-	public void comprarAcao(String codigo, int precoMaximoCompra, int prazo, UUID idCliente) throws RemoteException;
-	public void venderAcao(String codigo, int precoMinimoVenda, int prazo, UUID idCliente) throws RemoteException;
+	public void comprarAcao(String codigo, int precoMaximoCompra, int prazo, UUID idCliente, int qtdComprar) throws RemoteException;
+	public void venderAcao(String codigo, int precoMinimoVenda, int prazo, UUID idCliente, int qtdVendas) throws RemoteException;
 	public List<Empresa> listarEmpresas() throws RemoteException;
 	public void realizarVenda(Ordem venda, Ordem compra) throws RemoteException;
 	public List<Acao> listarAcoesCliente(UUID idCliente) throws RemoteException;
