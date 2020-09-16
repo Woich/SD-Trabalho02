@@ -25,10 +25,16 @@ public class Empresa implements Serializable{
 		this.nome = nome;
 		this.codigo = nome.substring(0, 3).toUpperCase();
 		
+		this.quantidadeTotalAcoes = quantidadeTotalAcoes;
+		
 		if(acoes == null) {
 			this.acoes = new ArrayList<Acao>();
 		}
 		
+		valorEmpresa = 0;
+	}
+	
+	public void gerarAcoes() {
 		for(int i=0; i<quantidadeTotalAcoes; i++) {
 			String codigo = this.codigo + "-" + i;
 			acoes.add(new Acao(codigo, 0, this));
@@ -67,6 +73,31 @@ public class Empresa implements Serializable{
 
 	public void setValorEmpresa(double valorEmpresa) {
 		this.valorEmpresa = valorEmpresa;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Empresa other = (Empresa) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
 }
