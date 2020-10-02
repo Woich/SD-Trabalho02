@@ -30,6 +30,7 @@ const comprarAcao = (
     qtdCompra) => {
     return true;
 };
+
 const venderAcao = (
     codigoAcaoVenda,
     minReceber,
@@ -40,6 +41,11 @@ const venderAcao = (
     return true;
 };
 
+const insertCotacao = (valorCotacao) => {
+    return true;
+};
+
 exports.listarAcoesCliente = listarAcoesCliente;
 exports.comprarAcao = comprarAcao;
 exports.venderAcao = venderAcao;
+exports.insertCotacao = insertCotacao;

@@ -112,16 +112,59 @@ while (escolha !== '-1') {
         notificacaoService.registrarInteresse(idCliente, codEmpresa, valGanho, valPerda);
         break;
     case '6':
+        console.log('-----------------------------------------');
+        console.log('EMPRESAS COM INTERESSE');
+        console.log('-----------------------------------------');
+        console.log('CODIGO | NOME');
+        var empresasInteresse = [];
+        empresasInteresse = empresaService.listarEmpresasInteressado(idCliente);
+        empresasInteresse.forEach(item => {
+            console.log('-----------------------------------------');
+            console.log(`${item.codigo} | ${item.nome}`);
+        });
+
+        console.log('-----------------------------------------');
+        console.log('');
+        var codEmpresaInteresse = prompt('Qual a empresa desejada (Informar Codigo): ');
+        acaoService.removeInteresse(idCliente, codEmpresaInteresse);
         break;
     case '7':
+        console.log('-----------------------------------------');
+        console.log('EMPRESAS COM INTERESSE');
+        console.log('-----------------------------------------');
+        console.log('CODIGO | NOME');
+        var listaEmpresasInteresse = [];
+        listaEmpresasInteresse = empresaService.listarEmpresasInteressado(idCliente);
+        listaEmpresasInteresse.forEach(item => {
+            console.log('-----------------------------------------');
+            console.log(`${item.codigo} | ${item.nome}`);
+        });
+
+        console.log('-----------------------------------------');
+        console.log('');
         break;
     case '8':
+        var valorCotacao = prompt('De quanto sera o aumento?(R$): ');
+        acaoService.insertCotacao(valorCotacao);
         break;
     case '9':
+        var valorCotacaoReducao = prompt('De quanto sera a reducao?(R$): ');
+        acaoService.insertCotacao(valorCotacaoReducao);
         break;
     case '10':
+        console.log('-----------------------------------------');
+        console.log('CODIGO | NOME | VALOR EMPRESA');
+        var listEmpresas = [];
+        listEmpresas = empresaService.listarEmpresas();
+        listEmpresas.forEach((item) => {
+            console.log('-----------------------------------------');
+            console.log(`${item.codigo} | ${item.nome} | ${item.valorEmpresa}`);
+        });
+
+        console.log('-----------------------------------------');
         break;
     case '11':
+        notificacaoService.listarNotificacoes();
         break;
     default:
         break;
